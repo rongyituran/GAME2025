@@ -175,9 +175,9 @@ export class PlatformManager {
   }
 
   getLandingPlatform(playerX, playerY) {
-    // 返回玩家下方最近的平台，落地判定范围收紧
+    // 只要玩家中心点落在平台宽度范围内就算成功
     return this.platforms.find(p =>
-      playerX + 25 > p.x && playerX - 25 < p.x + p.width &&
+      playerX >= p.x && playerX <= p.x + p.width &&
       playerY + 60 >= p.y - 5 && playerY + 60 <= p.y + 25
     )
   }
