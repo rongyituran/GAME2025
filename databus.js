@@ -1,4 +1,5 @@
 // 全局状态管理
+import WxAdapter from './wx-adapter.js'
 export default class DataBus {
   constructor() {
     this.reset()
@@ -16,21 +17,17 @@ export default class DataBus {
   }
 
   saveHighScore() {
-    if (this.score > this.highScore) {
-      this.highScore = this.score
-      try {
-        wx.setStorageSync('highScore', this.highScore)
-      } catch (e) {
-        console.error('保存最高分失败:', e)
-      }
-    }
+    try {
+      WxAdapter.setStorageSync('highScore', this.highScore)
+    } catch (e) {}
   }
 
   loadHighScore() {
     try {
-      this.highScore = wx.getStorageSync('highScore') || 0
+      // 兼容微信和Web
+      const score = WxAdapter.getStorageSync('highScore')
+      this.highScore = score ? parseInt(score) : 0
     } catch (e) {
-      console.error('加载最高分失败:', e)
       this.highScore = 0
     }
   }

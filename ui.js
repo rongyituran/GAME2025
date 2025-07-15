@@ -1,5 +1,6 @@
 // UI渲染
 import { GAME_WIDTH, GAME_HEIGHT } from './config.js'
+import WxAdapter from './wx-adapter.js'
 
 export default class GameUI {
   constructor(databus) {
