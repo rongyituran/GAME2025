@@ -1,12 +1,13 @@
 // UI渲染
 import { GAME_WIDTH, GAME_HEIGHT } from './config.js'
 import WxAdapter from './wx-adapter.js'
+import PlatformAdapter from './platform-adapter.js'
 
 export default class GameUI {
   constructor(databus) {
     this.databus = databus
     // 获取屏幕信息
-    const systemInfo = wx.getSystemInfoSync()
+    const systemInfo = PlatformAdapter.getSystemInfo()
     this.screenWidth = systemInfo.windowWidth
     this.screenHeight = systemInfo.windowHeight
   }
