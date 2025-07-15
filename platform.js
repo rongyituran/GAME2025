@@ -175,9 +175,13 @@ export class PlatformManager {
   }
 
   getLandingPlatform(playerX, playerY) {
-    // 只要玩家中心点落在平台宽度范围内就算成功
+    // 玩家宽度
+    const PLAYER_WIDTH = 100;
+    const playerLeft = playerX - PLAYER_WIDTH / 2;
+    const playerRight = playerX + PLAYER_WIDTH / 2;
+    // 只要玩家与平台有重叠（碰撞箱重叠）即算成功
     return this.platforms.find(p =>
-      playerX >= p.x && playerX <= p.x + p.width &&
+      playerRight > p.x && playerLeft < p.x + p.width &&
       playerY + 60 >= p.y - 5 && playerY + 60 <= p.y + 25
     )
   }
