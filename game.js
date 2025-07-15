@@ -8,9 +8,10 @@ import { BirdManager } from './bird.js'
 import AudioManager from './audio.js'
 import EffectSystem from './effects.js'
 import { PowerUpManager } from './powerup.js'
+import PlatformAdapter from './platform-adapter.js'
 
 // 初始化画布
-const systemInfo = wx.getSystemInfoSync()
+const systemInfo = PlatformAdapter.getSystemInfo()
 const screenWidth = systemInfo.windowWidth
 const screenHeight = systemInfo.windowHeight
 
@@ -24,7 +25,7 @@ const offsetY = (screenHeight - SCALED_HEIGHT) / 2
 export default class Game {
   constructor() {
     // 创建画布
-    this.canvas = wx.createCanvas()
+    this.canvas = PlatformAdapter.createCanvas()
     this.canvas.width = screenWidth
     this.canvas.height = screenHeight
     this.ctx = this.canvas.getContext('2d')
@@ -200,7 +201,7 @@ export default class Game {
   }
 
   bindTouchEvents() {
-    wx.onTouchStart(e => {
+    PlatformAdapter.onTouchStart(e => {
       if (this.databus.gameOver) {
         this.databus.reset()
         this.platformManager.reset()
@@ -211,7 +212,7 @@ export default class Game {
       this.player.startCharge()
     })
     
-    wx.onTouchEnd(e => {
+    PlatformAdapter.onTouchEnd(e => {
       if (!this.databus.gameOver) {
         this.player.endCharge()
         this.audioManager.playJump()
@@ -249,4 +250,10 @@ export default class Game {
 }
 
 // 启动游戏
-let game = new Game() 
+if (typeof wx !== 'undefined' && !!wx.getSystemInfoSync) {
+  let game = new Game()
+} else {
+  window.onload = () => {
+    let game = new Game()
+  }
+} 
